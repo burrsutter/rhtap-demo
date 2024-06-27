@@ -17,7 +17,7 @@ image::tip-6.png[]
 Via script
 
 ----
-REKOR_SERVER=https://$(oc get route rekor-server -n rekor -o json | jq -r .spec.host)
+REKOR_SERVER=https://$(oc get ingress rekor-server -n trusted-artifact-signer  -o json  | jq -r '.spec.rules[0].host')
 curl $REKOR_SERVER/api/v1/log/publicKey > public.key
 oc exec vault-0 -n vault -- vault kv put kv/secrets/janusidp/rekor public_key="$(cat public.key)"
 ----
